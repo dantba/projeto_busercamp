@@ -1,5 +1,5 @@
 export default ({ store, redirect, req }) => {
   if (!store.getters['auth/loggedIn']) {
-    return req ? redirect('/index', { next: req.url }) : redirect('/index')
+    return req ? redirect('/', { next: req.url }) : redirect('/')
   }
 }

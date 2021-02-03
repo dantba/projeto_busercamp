@@ -58,26 +58,22 @@ const api = {
             'tipo': 'Compra',
             'loja': 'Mike',
             'data_operacao': '12/12/2020',
-            'valor': 45.00,
+            'valor': 'R$45,00',
             'prestacao_atual': 3,
             'prestacao_total': 4
           },
           {
-            'tipo': 'Compra',
-            'loja': 'Ardidas',
-            'data_operacao': '18/12/2021',
-            'valor': 45.89,
-            'prestacao_atual': 5,
-            'prestacao_total': 7
-          },
-          {
             'tipo': 'Pagamento',
-            'data_operacao': '07/01/2021',
-            'valor': 90.91
+            'loja': '-',
+            'data_operacao': '20/12/2020',
+            'valor': 'R$45,00',
+            'prestacao_atual': '-',
+            'prestacao_total': '-'
           }
         ],
-        totalFatura: 90.89,
-        pago: true
+        totalFatura: 'R$45,00',
+        pago: true,
+        fechado: true
       }
     })
   }

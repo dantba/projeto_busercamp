@@ -1,8 +1,7 @@
 <template>
-  <v-app-bar color="blue-grey darken-4" dark fixed app clipped-right>
-    <v-toolbar-title>Brennercard</v-toolbar-title>
+  <v-app-bar>
+    <v-toolbar-title>Bem-vindo(a), {{logged_user.name.split(" ", 1)[0]}}</v-toolbar-title>
     <v-spacer />
-    <v-btn v-if="!logged_user" text dark ripple class="ma-0 ml-5" @click="open_login_dialog($event)">Login</v-btn>
 
     <!-- <template v-slot:activator="{ on }"><v-btn v-on="on"> -->
     <v-menu v-if="logged_user" offset-y>
@@ -31,7 +30,7 @@
         <v-list>
           <v-list-item @click="logout()">
             <v-list-item-content>
-              <v-list-item-title>Log out</v-list-item-title>
+              <v-list-item-title>Logout</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -43,7 +42,6 @@
 
 <script>
 import loginDialog from '~/components/login-dialog.vue'
-import Snacks from '~/helpers/Snacks.js'
 import api from '~api'
 
 export default {
@@ -64,8 +62,7 @@ export default {
     async logout () {
       await api.logout()
       this.$store.commit('auth/setCurrentUser', null)
-      Snacks.show(this.$store, {text: 'Até logo!'})
-      this.$router.push('/index')
+      this.$router.push('/')
     }
   }
 }

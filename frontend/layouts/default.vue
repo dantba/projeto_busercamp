@@ -1,28 +1,14 @@
 <template>
-  <v-app id="inspire">
-    <toolbar :state="layout" />
+  <v-app light>
     <v-content>
-      <v-container fluid>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
-    <v-snackbar
-      :timeout="snack.timeout"
-      :color="snack.color"
-      bottom
-      v-model="snack.visible"
-    >
-      {{snack.text}}
-      <v-btn dark text @click.native="closeSnack">Close</v-btn>
-    </v-snackbar>
   </v-app>
 </template>
-
 <script>
-import toolbar from '~/components/toolbar.vue'
+
 export default {
   components: {
-    toolbar
   },
   data: () => ({
     layout: {

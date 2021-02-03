@@ -14,6 +14,8 @@
     :error-messages="errorMessages"
     :outline="outline"
     :autofocus="autofocus"
+    light
+    color="#551118"
     ref="tf"
   />
 </template>
@@ -67,3 +69,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.v-text-field{
+      width: 201px;
+}
+</style>

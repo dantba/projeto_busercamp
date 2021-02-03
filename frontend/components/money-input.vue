@@ -2,7 +2,6 @@
   <div>
     <v-text-field
       :autofocus="autofocus"
-      :full-width="fullWidth"
       :label="label"
       :placeholder="'0,00'"
       :prefix="prefix"
@@ -10,8 +9,11 @@
       :disabled="disabled"
       :suffix="suffix"
       v-model="maskedValue"
+      light
+      maxlength="15"
+      color="#551118"
       @keypress="isNumber($event)"
-      ref="field"
+      ref="tf"
     />
   </div>
 </template>
