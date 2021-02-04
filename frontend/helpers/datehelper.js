@@ -7,7 +7,7 @@ const datehelper = {
     const meses = [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ]
     const response = []
-    for (let i = 1; i < 7; i += 1) {
+    for (let i = -5; i < 7; i += 1) {
       d = new Date(today.getFullYear(), ((today.getMonth() - i)), 1)
       month = d.getMonth()
       year = d.getFullYear()

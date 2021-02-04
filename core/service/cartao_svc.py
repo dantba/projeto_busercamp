@@ -18,7 +18,6 @@ def add_cartao(perfil_json):
             numero_cartao = gerar_num()
             if helper_svc.get_object_or_none(Cartao, numero=numero_cartao) == None:
                 break
-        print(perfil)    
         cartao = Cartao(data_emissao=date.today(), numero=numero_cartao, limite=limite, perfil=perfil['perfil'])  
         cartao.save()
         return {"accepted": True, "cartao": cartao.to_dict_json()}

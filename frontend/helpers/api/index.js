@@ -18,5 +18,14 @@ export default {
   },
   add_todo (newtask) {
     return post('/api/add_todo', {new_task: newtask})
+  },
+  get_fatura (data) {
+    return get(`api/fatura/get/data=${data}`)
+  },
+  solicita_cartao (username, email, cpf, name, password, renda) {
+    return post('api/cartao/create', { username, email, cpf, name, password, renda })
+  },
+  get_limite () {
+    return get('api/limite/get')
   }
 }

@@ -22,4 +22,5 @@ module.exports = {
     'object-curly-spacing': 0,
     'camelcase': 0
   }
+
 }

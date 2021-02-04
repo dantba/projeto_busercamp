@@ -102,15 +102,11 @@ export default {
       this.items = response
     })
     this.loading = true
-    api.get_fatura('01', '21', this.logged_user).then(response => {
-      this.fatura = response.data
-      this.loading = false
-    })
   },
   methods: {
     onChange () {
       this.loading = true
-      api.get_fatura(this.selectedMonth.mes, this.selectedMonth.ano, this.logged_user).then(response => {
+      api.get_fatura(new Date(this.selectedMonth.ano, this.selectedMonth.mes, 8).toISOString()).then(response => {
         this.loading = false
         this.fatura = response.data
       })

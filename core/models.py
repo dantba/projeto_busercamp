@@ -73,6 +73,7 @@ class Operacao(models.Model):
             'tipo': self.tipo,
             'estabelecimento': self.estabelecimento,
             'data': self.data,
+            'valor': self.valor,
             'prestacoes_total': self.prestacoes_total,
         }
 
@@ -92,6 +93,7 @@ class Fatura(models.Model):
             'fechada': self.fechada,
             'ta_pago': self.ta_pago,
             'cartao': self.cartao.to_dict_json(),
+            'total': self.total,
             'operacoes': [o.to_dict_json() for o in self.operacoes.all()]
         }
             

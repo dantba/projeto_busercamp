@@ -17,7 +17,7 @@
               <v-list-item-title class="headline mb-1">
                 Limite Total
               </v-list-item-title>
-              <v-list-item-subtitle>R$500,00</v-list-item-subtitle>
+              <v-list-item-subtitle>{{limiteTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-avatar
@@ -43,14 +43,14 @@
       </div>
       <div class="graphs">
         <h2>Limite</h2>
-        <chart style="width: 200px; height: 200px" />
+        <chart :chart-data="chartdata" style="width: 200px; height: 200px" />
       </div>
     </div>
     <div class="div-data-table">
       <div class="select">
         <v-select
           :items="items"
-          label="Mês"
+          label="Selecione um Mês"
           item-value="value"
           item-text="label"
           v-model="selectedMonth"
@@ -67,7 +67,7 @@
           light
         />
         <div class="p-valor" v-if="!loading">
-          <p>Total: {{fatura.totalFatura}}</p>
+          <p>Total: {{fatura.total ? fatura.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}): ''}}</p>
         </div>
       </div>
     </div>
@@ -80,7 +80,9 @@ import chart from '~/components/Chart.vue'
 import datehelper from '~/helpers/datehelper'
 import toolbar from '~/components/toolbar.vue'
 import loading from '~/components/loading'
+
 export default {
+  layout: 'default',
   middleware: 'logged-user',
   components: {
     chart,
@@ -92,10 +94,8 @@ export default {
       def: {
         type: 'pie'
       },
-      dados: [
-        {label: 'Utilizado', value: '330'},
-        {label: 'Disponível', value: '170'}
-      ],
+      chartdata: null,
+      dados: [],
       userData: {
         email: '',
         name: '',
@@ -105,15 +105,17 @@ export default {
         username: '',
         password: ''
       },
+      limiteTotal: '',
       fatura: [],
       items: [],
       headers: [
         {text: 'Tipo', value: 'tipo'},
-        {text: 'Loja', value: 'loja'},
-        {text: 'Data', value: 'data_operacao'},
-        {text: 'Valor', value: 'valor'},
-        {text: 'Total Parcelas', value: 'prestacao_atual'},
-        {text: 'Parcela Atual', value: 'prestacao_total'}
+        {text: 'Estabelecimento', value: 'estabelecimento'},
+        {text: 'Data', value: 'data'},
+        {text: 'Valor(R$)', value: 'valor'},
+        {text: 'Valor Parcela(R$)', value: 'valor_parcela'},
+        {text: 'Total Parcelas', value: 'prestacoes_total'},
+        {text: 'Parcela Atual', value: 'prestacao_atual'}
       ],
       selectedMonth: '',
       loading: false
@@ -134,18 +136,46 @@ export default {
     datehelper.lastsixmonths().then(response => {
       this.items = response
     })
-    this.loading = true
-    api.get_fatura('01', '21', this.logged_user).then(response => {
-      this.fatura = response.data
-      this.loading = false
-    })
+  },
+  mounted () {
+    this.preencheGrafico()
   },
   methods: {
     onChange () {
       this.loading = true
-      api.get_fatura(this.selectedMonth.mes, this.selectedMonth.ano, this.logged_user).then(response => {
+      api.get_fatura(new Date(this.selectedMonth.ano, this.selectedMonth.mes - 1, 8).toISOString().split('T')[0]).then(response => {
+        this.fatura = response.fatura
+        if (response.status) {
+          for (const o in response.fatura.operacoes) {
+            if (response.fatura.operacoes[parseInt(o)].tipo === 'Compra') {
+              let diff = 0
+              diff += (this.selectedMonth.ano - parseInt(response.fatura.operacoes[parseInt(o)].data.split('-')[0])) * 12
+              diff += this.selectedMonth.mes - parseInt(response.fatura.operacoes[parseInt(o)].data.split('-')[1])
+              response.fatura.operacoes[parseInt(o)].prestacao_atual = diff
+              response.fatura.operacoes[parseInt(o)].valor_parcela = response.fatura.operacoes[parseInt(o)].valor / response.fatura.operacoes[parseInt(o)].prestacoes_total
+            }
+          }
+          this.fatura = response.fatura
+        } else {
+          this.fatura = ''
+        }
         this.loading = false
-        this.fatura = response.data
+      })
+    },
+    preencheGrafico () {
+      api.get_limite().then(response => {
+        this.limiteTotal = response.total
+        this.dados[0] = response.utilizado
+        this.dados[1] = response.disponivel
+        this.chartdata = {
+          labels: ['Utilizado(R$)', 'Disponível(R$)'],
+          datasets: [{
+            label: 'Limite',
+            backgroundColor: ['#551118', '#288db5'],
+            data: this.dados
+          }
+          ]
+        }
       })
     }
   }

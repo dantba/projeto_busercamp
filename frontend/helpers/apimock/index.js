@@ -50,7 +50,7 @@ const api = {
       }
     })
   },
-  get_fatura (mes, ano, logged_user) {
+  get_fatura (data) {
     return mockasync({
       data: {
         operacoes: [

@@ -18,7 +18,7 @@ def login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = auth.authenticate(username=username, password=password)
-    user_dict = {"Erro": "username ou senha inválido"}
+    user_dict = None
     if user is not None:
         if user.is_active:
             auth.login(request, user)

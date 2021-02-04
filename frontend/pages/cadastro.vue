@@ -45,7 +45,7 @@
             maxlength="15"
           />
           <money-input
-            v-model="userData.income"
+            v-model="userData.renda"
             label="Renda"
             :rules="[rules.required, rules.money]"
           />
@@ -105,7 +105,7 @@ export default {
         name: '',
         phone: '',
         cpf: '',
-        income: '',
+        renda: '',
         username: '',
         password: ''
       },
@@ -131,17 +131,23 @@ export default {
       this.error = null
       if (this.$refs.editProfileForm.validate()) {
         this.loading = true
-        api.solicita_cartao(this.userData).then(res => {
-          this.$store.commit('auth/setCurrentUser', res.user)
+        api.solicita_cartao(this.userData.username, this.userData.email, this.userData.cpf, this.userData.name, this.userData.password, this.userData.renda).then(res => {
+          if (res.accepted) {
+            this.$store.commit('auth/setCurrentUser', res.cartao.perfil.userData)
+            this.$router.push('/fatura')
+          } else {
+            this.error = res.Erro
+          }
+
           /* this.$store.commit('toast/open', { message: 'Solicitação de cartão enviada \\o/', color: 'success' })
-          if (oldPhone !== this.userData.phone) {
-            this.$router.push({ name: 'confirmPhone' })
-          } */
+            if (oldPhone !== this.userData.phone) {
+              this.$router.push({ name: 'confirmPhone' })
+
+            } */
         }).catch(error => {
           this.error = error.message
         }).finally(() => {
           this.loading = false
-          this.$router.push('/fatura')
         })
       }
     }

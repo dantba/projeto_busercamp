@@ -1,26 +1,22 @@
 
 <script>
-import { Pie } from 'vue-chartjs'
+import { Pie, mixins } from 'vue-chartjs'
 
 export default {
   extends: Pie,
-  data: () => ({
-    chartdata: {
-      labels: ['Utilizado(R$)', 'Disponível(R$)'],
-      datasets: [{
-        label: 'Limite',
-        backgroundColor: ['#551118', '#288db5'],
-        data: [40, 20]
+  mixins: [mixins.reactiveProp],
+  props: ['chartData'],
+  data () {
+    return {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
       }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
     }
-  }),
+  },
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+    console.log(this.chartData)
+    this.renderChart(this.chartData, this.options)
   }
 }
 

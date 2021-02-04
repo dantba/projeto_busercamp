@@ -8,8 +8,8 @@ import json
 def get_fatura(data_vencimento, perfil):
     fatura = helper_svc.get_object_or_none(Fatura, data_vencimento=date.fromisoformat(data_vencimento), perfil=perfil)
     if fatura == None:
-        return {"Erro": "Fatura inexistente em nosso sistema"}
-    return fatura.to_dict_json()
+        return {"status": False, "erro": "Fatura inexistente em nosso sistema"}
+    return {"status": True, "fatura": fatura.to_dict_json()}
 
 def get_limite(perfil):
     faturas = Fatura.objects.filter(perfil=perfil, ta_pago=False)

@@ -90,13 +90,13 @@ export default {
     async login () {
       this.loading = true
       this.error = false
-      const user = await api.login(this.username, this.password)
+      const user = await api.login(this.userData.username, this.userData.password)
       if (user) {
         this.$store.commit('auth/setCurrentUser', user)
         this.visible = false
         this.$router.push('/fatura')
       } else {
-        this.error = true
+        this.error = 'Usuário ou senha inválido'
       }
       this.loading = false
     }
