@@ -137,11 +137,11 @@ export default {
           if (oldPhone !== this.userData.phone) {
             this.$router.push({ name: 'confirmPhone' })
           } */
-          this.$router.push({name: 'index'})
         }).catch(error => {
           this.error = error.message
         }).finally(() => {
           this.loading = false
+          this.$router.push('/fatura')
         })
       }
     }

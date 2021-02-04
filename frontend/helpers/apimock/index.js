@@ -41,7 +41,7 @@ const api = {
   },
   solicita_cartao (userData) {
     // eslint-disable-next-line no-undef
-    this.save_user(userData)
+    this.user = this.save_user(userData)
     return mockasync({
       accepted: true,
       user: {

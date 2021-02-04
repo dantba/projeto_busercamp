@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, JsonResponse
 from django.contrib import auth
 from commons.django_model_utils import get_or_none
 from commons.django_views_utils import ajax_login_required
-from core.service import log_svc, globalsettings_svc, perfil_svc, cartao_svc
+from core.service import log_svc, globalsettings_svc, perfil_svc, cartao_svc, fatura_svc, operacao_svc
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -18,7 +18,7 @@ def login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = auth.authenticate(username=username, password=password)
-    user_dict = None
+    user_dict = {"Erro": "username ou senha inválido"}
     if user is not None:
         if user.is_active:
             auth.login(request, user)
@@ -26,7 +26,7 @@ def login(request):
             user_dict = _user2dict(user)
     return JsonResponse(user_dict, safe=False)
 
-
+@csrf_exempt
 def logout(request):
     if request.method.lower() != 'post':
         raise Exception('Logout only via post')
@@ -57,7 +57,24 @@ def create_profile(request):
 def create_cartao(request):
     cartao = cartao_svc.add_cartao(request.POST)
     return JsonResponse(cartao, safe=False)
-    
+
+@ajax_login_required
+def get_fatura(request, data):
+    fatura = fatura_svc.get_fatura(data, request.user.perfil)
+    return JsonResponse(fatura, safe=False)    
+
+@ajax_login_required
+@csrf_exempt
+def create_operacao(request):
+    if request.user.is_staff:
+        response = operacao_svc.create_operacao(request.POST)
+        return JsonResponse(response, safe=False)
+    return JsonResponse({"Erro": "Requisição inválida"}, safe=False)
+
+@ajax_login_required
+def get_limite(request):
+    response = fatura_svc.get_limite(request.user.perfil)
+    return JsonResponse(response, safe=False)
 
 def _user2dict(user):
     d = {

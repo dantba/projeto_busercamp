@@ -7,6 +7,7 @@ from datetime import date
 
 def add_cartao(perfil_json):
     limite = verifica_score(float(perfil_json['renda']))
+    limite = ((limite + 10)//10)*10
     if limite < 500:
         return{"accepted": False, "Erro": "Cartão Recusado"}
     perfil = perfil_svc.add_perfil(perfil_json)

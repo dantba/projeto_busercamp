@@ -18,7 +18,6 @@ class FaturaAdmin(admin.ModelAdmin):
 class OperacaoAdmin(admin.ModelAdmin):
     list_display = ('id', 'tipo', 'estabelecimento', 'data', 'prestacoes_total', 'perfil', 'cartao')    
 
-
 admin.site.register(ActivityLog, ActivityLogAdmin)
 admin.site.register(Perfil, PerfilAdmin)
 admin.site.register(Cartao, CartaoAdmin)

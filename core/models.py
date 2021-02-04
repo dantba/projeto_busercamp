@@ -58,9 +58,10 @@ class Cartao(models.Model):
 class Operacao(models.Model):
     tipo = models.CharField(max_length=10)
     valor = models.FloatField()
-    estabelecimento = models.CharField(max_length=30)
+    estabelecimento = models.CharField(max_length=30, blank=True)
+    mes_final = models.CharField(max_length=15, blank=True)
     data = models.DateField()
-    prestacoes_total = models.IntegerField()
+    prestacoes_total = models.IntegerField(blank=True)
     perfil = models.ForeignKey('perfil', on_delete=models.SET_NULL, null=True)
     cartao = models.ForeignKey('cartao', on_delete=models.SET_NULL, null=True)
    
@@ -73,8 +74,6 @@ class Operacao(models.Model):
             'estabelecimento': self.estabelecimento,
             'data': self.data,
             'prestacoes_total': self.prestacoes_total,
-            'perfil': self.perfil,
-            'cartao': self.cartao
         }
 
 
@@ -92,9 +91,8 @@ class Fatura(models.Model):
             'data_vencimento': self.data_vencimento,
             'fechada': self.fechada,
             'ta_pago': self.ta_pago,
-            'cartao': self.data_vencimento,
-            'perfil': self.perfil.to_dict_json(),
-            'operacoes': [o.to_dict_json for o in self.operacoes]
+            'cartao': self.cartao.to_dict_json(),
+            'operacoes': [o.to_dict_json() for o in self.operacoes.all()]
         }
             
 
