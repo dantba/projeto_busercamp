@@ -133,8 +133,14 @@ export default {
         this.loading = true
         api.solicita_cartao(this.userData.username, this.userData.email, this.userData.cpf, this.userData.name, this.userData.password, this.userData.renda).then(res => {
           if (res.accepted) {
-            this.$store.commit('auth/setCurrentUser', res.cartao.perfil.userData)
-            this.$router.push('/fatura')
+            api.login(this.userData.username, this.userData.password).then(response => {
+              const user = response
+              if (user) {
+                this.$store.commit('auth/setCurrentUser', user)
+                this.visible = false
+                this.$router.push('/fatura')
+              }
+            })
           } else {
             this.error = res.Erro
           }
@@ -199,7 +205,7 @@ export default {
 
 .form-inside{
   display: flex;
-  margin-top: 15px;
+  margin-top: 5px;
   flex-direction: column;
   align-items: center;
 }
@@ -207,7 +213,7 @@ export default {
 .text{
   display: flex;
   justify-content: flex-start;
-  margin-top: 25px;
+  margin-top: 15px;
 }
 .cadastrar-btn:hover{
     /* red-darken-4 -https://vuetifyjs.com/en/styles/colors/#material-colors */
