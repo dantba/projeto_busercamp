@@ -4,6 +4,8 @@ RUN apk add openrc bash curl vim nano git zip unzip nginx gcc libc-dev linux-hea
     mkdir /run/nginx && \
     pip install uwsgi uwsgitop
 
+RUN apk add make g++
+
 # Replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh && \
     echo "export LS_OPTIONS='--color=auto'" >>~/.bashrc && \

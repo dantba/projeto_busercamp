@@ -102,8 +102,8 @@ On your remote machine, create a file ~/brennercard.env:
 ```
 DJANGO_DB_PASSWORD=<brennercard's password>
 DJANGO_DB_HOST=<database_ip>
-DJANGO_DB_NAME=brennercard
-DJANGO_DB_USER=brennercard
+DJANGO_DB_NAME=app
+DJANGO_DB_USER=app
 DJANGO_DEBUG=0
 ```
 
