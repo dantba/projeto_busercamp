@@ -1,5 +1,7 @@
 # 1. Dev-env, super-easy mode (docker all things)
 
+Mostra como funciona um MR
+
 Requirements:
 - [Install docker](https://docs.docker.com/install/)
 - Learn [Python](https://docs.python.org/3/tutorial/) and [Django](https://docs.djangoproject.com/en/2.0/intro/tutorial01/)
